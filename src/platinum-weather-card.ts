@@ -2283,8 +2283,8 @@ export class PlatinumWeatherCard extends LitElement {
   private getHassWindSpeedUnit(): 'km/h' | 'mph' | 'm/s' {
     const ha = (this.hass.config.unit_system as any).wind_speed as string | undefined;
     if (ha) return ha as any;
-    // Default to SI when not specified by HA
-    return 'm/s';
+    // Default to km/h when not specified by HA (weather entities typically provide km/h)
+    return 'km/h';
   }
 
   private getConfiguredWindSpeedUnit(): 'km/h' | 'mph' {
