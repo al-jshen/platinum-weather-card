@@ -7,7 +7,7 @@ import { keys } from 'ts-transformer-keys';
 import { mdiPencil, mdiArrowDown, mdiArrowUp, mdiApplicationEditOutline } from '@mdi/js';
 
 //import { ScopedRegistryHost } from '@lit-labs/scoped-registry-mixin';
-import { WeatherCardConfig, layoutOverview, layoutOrientation, layoutDays, extendedDays, sectionType, timeFormat, sectionNames, pressureDecimals, HassCustomElement } from './types';
+import { WeatherCardConfig, layoutOverview, layoutOrientation, layoutDays, extendedDays, sectionType, timeFormat, sectionNames, pressureDecimals, HassCustomElement, temperatureUnit, windSpeedUnit, airPressureUnit, lengthUnitOption, precipitationUnit, precipitationIntensityUnit } from './types';
 import { customElement, property, state } from 'lit/decorators';
 import { formfieldDefinition } from '../elements/formfield';
 import { selectDefinition } from '../elements/select';
@@ -571,6 +571,30 @@ export class WeatherCardEditor extends LitElement implements LovelaceCardEditor 
 
   get _option_locale(): string {
     return this._config?.option_locale || '';
+  }
+
+  get _option_unit_temperature(): temperatureUnit | null {
+    return this._config?.option_unit_temperature ?? null;
+  }
+
+  get _option_unit_wind_speed(): windSpeedUnit | null {
+    return this._config?.option_unit_wind_speed ?? null;
+  }
+
+  get _option_unit_air_pressure(): airPressureUnit | null {
+    return (this._config as any)?.option_unit_air_pressure ?? null;
+  }
+
+  get _option_unit_length(): lengthUnitOption | null {
+    return (this._config as any)?.option_unit_length ?? null;
+  }
+
+  get _option_unit_precipitation(): precipitationUnit | null {
+    return (this._config as any)?.option_unit_precipitation ?? null;
+  }
+
+  get _option_unit_precipitation_intensity(): precipitationIntensityUnit | null {
+    return (this._config as any)?.option_unit_precipitation_intensity ?? null;
   }
 
   get _optional_entities(): TemplateResult {
@@ -1365,6 +1389,43 @@ export class WeatherCardEditor extends LitElement implements LovelaceCardEditor 
         </ha-select>
         <ha-textfield label="Locale" .value=${this._option_locale} .configValue=${'option_locale'} @input=${this._valueChanged}>
         </ha-textfield>
+      </div>
+      <div class="side-by-side">
+        <ha-select label="Temperature Unit" .configValue=${'option_unit_temperature'} .value=${this._option_unit_temperature} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()} @selected=${this._valueChanged}>
+          <mwc-list-item></mwc-list-item>
+          <mwc-list-item value="C">C</mwc-list-item>
+          <mwc-list-item value="F">F</mwc-list-item>
+        </ha-select>
+        <ha-select label="Wind Speed Unit" .configValue=${'option_unit_wind_speed'} .value=${this._option_unit_wind_speed} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()} @selected=${this._valueChanged}>
+          <mwc-list-item></mwc-list-item>
+          <mwc-list-item value="km/h">km/h</mwc-list-item>
+          <mwc-list-item value="mph">mph</mwc-list-item>
+        </ha-select>
+      </div>
+      <div class="side-by-side">
+        <ha-select label="Air Pressure Unit" .configValue=${'option_unit_air_pressure'} .value=${this._option_unit_air_pressure} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()} @selected=${this._valueChanged}>
+          <mwc-list-item></mwc-list-item>
+          <mwc-list-item value="hPa">hPa</mwc-list-item>
+          <mwc-list-item value="mbar">mbar</mwc-list-item>
+          <mwc-list-item value="inHg">inHg</mwc-list-item>
+        </ha-select>
+        <ha-select label="Length Unit" .configValue=${'option_unit_length'} .value=${this._option_unit_length} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()} @selected=${this._valueChanged}>
+          <mwc-list-item></mwc-list-item>
+          <mwc-list-item value="km">km</mwc-list-item>
+          <mwc-list-item value="mi">mi</mwc-list-item>
+        </ha-select>
+      </div>
+      <div class="side-by-side">
+        <ha-select label="Precipitation Unit" .configValue=${'option_unit_precipitation'} .value=${this._option_unit_precipitation} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()} @selected=${this._valueChanged}>
+          <mwc-list-item></mwc-list-item>
+          <mwc-list-item value="mm">mm</mwc-list-item>
+          <mwc-list-item value="in">in</mwc-list-item>
+        </ha-select>
+        <ha-select label="Precipitation Intensity Unit" .configValue=${'option_unit_precipitation_intensity'} .value=${this._option_unit_precipitation_intensity} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()} @selected=${this._valueChanged}>
+          <mwc-list-item></mwc-list-item>
+          <mwc-list-item value="mm/h">mm/h</mwc-list-item>
+          <mwc-list-item value="in/h">in/h</mwc-list-item>
+        </ha-select>
       </div>
     `;
   }

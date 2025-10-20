@@ -19,6 +19,12 @@ export type layoutDays = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 export type extendedDays = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 export type pressureDecimals = 0 | 1 | 2 | 3;
 export type timeFormat = 'system' | '12hour' | '24hour';
+export type temperatureUnit = 'C' | 'F';
+export type windSpeedUnit = 'km/h' | 'mph';
+export type airPressureUnit = 'hPa' | 'mbar' | 'inHg';
+export type lengthUnitOption = 'km' | 'mi';
+export type precipitationUnit = 'mm' | 'in';
+export type precipitationIntensityUnit = 'mm/h' | 'in/h';
 
 // TODO Add your configuration elements here for type-checking
 export interface WeatherCardConfig extends LovelaceCardConfig {
@@ -125,6 +131,14 @@ export interface WeatherCardConfig extends LovelaceCardConfig {
   option_tooltips?: boolean;
   old_daily_format?: boolean;
   option_show_beaufort?: boolean;
+
+  // Unit overrides
+  option_unit_temperature?: temperatureUnit;
+  option_unit_wind_speed?: windSpeedUnit;
+  option_unit_air_pressure?: airPressureUnit;
+  option_unit_length?: lengthUnitOption; // used for visibility/distance
+  option_unit_precipitation?: precipitationUnit;
+  option_unit_precipitation_intensity?: precipitationIntensityUnit;
 
   entity?: string;
   tap_action?: ActionConfig;
