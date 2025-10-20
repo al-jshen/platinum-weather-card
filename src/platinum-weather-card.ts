@@ -2170,7 +2170,7 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
   getUOM(measure: string): string {
-    const lengthUnit = (this._config.option_unit_length as any) || this.hass.config.unit_system.length;
+    const lengthUnit = ((this._config as any).option_unit_length as any) || this.hass.config.unit_system.length || 'km';
 
     switch (measure) {
       case 'temperature': {
@@ -2182,9 +2182,10 @@ export class PlatinumWeatherCard extends LitElement {
       case 'air_pressure': {
         const configured = (this._config as any).option_unit_air_pressure;
         if (configured) return configured;
-        return this._config.entity_pressure !== undefined && this.hass.states[this._config.entity_pressure].attributes.unit_of_measurement !== undefined ?
-          this.hass.states[this._config.entity_pressure].attributes.unit_of_measurement as string :
-          lengthUnit === 'km' ? 'hPa' : 'mbar';
+        if (this._config.entity_pressure !== undefined && this.hass.states[this._config.entity_pressure].attributes.unit_of_measurement !== undefined) {
+          return this.hass.states[this._config.entity_pressure].attributes.unit_of_measurement as string;
+        }
+        return 'hPa';
       }
       case 'length':
         return lengthUnit;
@@ -2197,9 +2198,9 @@ export class PlatinumWeatherCard extends LitElement {
         return lengthUnit === 'km' ? 'km/h' : 'mph';
       }
       case 'precipitation':
-        return (this._config as any).option_unit_precipitation || (lengthUnit === 'km' ? 'mm' : 'in');
+        return (this._config as any).option_unit_precipitation || (lengthUnit === 'mi' ? 'in' : 'mm');
       case 'intensity':
-        return (this._config as any).option_unit_precipitation_intensity || (lengthUnit === 'km' ? 'mm/h' : 'in/h');
+        return (this._config as any).option_unit_precipitation_intensity || (lengthUnit === 'mi' ? 'in/h' : 'mm/h');
       default:
         return this.hass.config.unit_system[measure] || '';
     }
@@ -2290,8 +2291,8 @@ export class PlatinumWeatherCard extends LitElement {
   private getHassWindSpeedUnit(): 'km/h' | 'mph' | 'm/s' {
     const ha = (this.hass.config.unit_system as any).wind_speed as string | undefined;
     if (ha) return ha as any;
-    const lengthUnit = this.hass.config.unit_system.length;
-    return lengthUnit === 'km' ? 'km/h' : 'mph';
+    // Default to SI when not specified by HA
+    return 'm/s';
   }
 
   private getConfiguredWindSpeedUnit(): 'km/h' | 'mph' {
