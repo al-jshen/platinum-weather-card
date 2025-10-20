@@ -17,14 +17,6 @@ console.info(
   'color: white; font-weight: bold; background: dimgray',
 );
 
-// This puts your card into the UI card picker dialog
-(window as any).customCards = (window as any).customCards || [];
-(window as any).customCards.push({
-  type: 'platinum-weather-card',
-  name: 'Platinum Weather Card',
-  description: 'An fully customisable weather card with a GUI configuration',
-});
-
 // TODO Name your custom element
 @customElement('platinum-weather-card')
 export class PlatinumWeatherCard extends LitElement {
@@ -2735,3 +2727,11 @@ export class PlatinumWeatherCard extends LitElement {
     `;
   }
 }
+
+// Register the card with Home Assistant
+(window as any).customCards = (window as any).customCards || [];
+(window as any).customCards.push({
+  type: 'platinum-weather-card',
+  name: 'Platinum Weather Card',
+  description: 'An fully customisable weather card with a GUI configuration',
+});
